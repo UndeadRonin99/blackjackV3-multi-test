@@ -1,0 +1,47 @@
+@model BlackjackV3.Models.CardDisplayModel
+
+@if (Model.Card != null)
+{
+    <div class="card @(Model.FaceDown ? "card--facedown" : "")" 
+         data-card-index="@Model.CardIndex"
+         data-rank="@Model.Card.Rank"
+         data-suit="@Model.Card.Suit">
+        @if (Model.FaceDown)
+ {
+            <div class="card-back"></div>
+        }
+        else
+    {
+            <div class="card-front">
+                <div class="card-rank">@GetRankDisplay(Model.Card.Rank)</div>
+   <div class="card-suit">@GetSuitSymbol(Model.Card.Suit)</div>
+            </div>
+        }
+    </div>
+}
+
+@functions {
+private string GetRankDisplay(BlackjackV3.Domain.Rank rank)
+    {
+ return rank switch
+        {
+            BlackjackV3.Domain.Rank.Ace => "A",
+  BlackjackV3.Domain.Rank.Jack => "J",
+   BlackjackV3.Domain.Rank.Queen => "Q",
+       BlackjackV3.Domain.Rank.King => "K",
+            _ => ((int)rank).ToString()
+        };
+    }
+
+    private string GetSuitSymbol(BlackjackV3.Domain.Suit suit)
+    {
+        return suit switch
+        {
+      BlackjackV3.Domain.Suit.Hearts => "?",
+            BlackjackV3.Domain.Suit.Diamonds => "?",
+       BlackjackV3.Domain.Suit.Clubs => "?",
+            BlackjackV3.Domain.Suit.Spades => "?",
+ _ => ""
+ };
+    }
+}

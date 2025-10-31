@@ -1,0 +1,15 @@
+@model BlackjackV3.Models.HandDisplayModel
+
+<div class="hand" id="@Model.HandId">
+    @for (int i = 0; i < Model.Cards.Count; i++)
+    {
+        var card = Model.Cards[i];
+        var isHidden = Model.HideSecondCard && i == 1;
+        
+   <partial name="_Card" model="@(new CardDisplayModel { 
+      Card = card, 
+   FaceDown = isHidden,
+            CardIndex = i
+  })" />
+    }
+</div>

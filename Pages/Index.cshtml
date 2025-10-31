@@ -1,0 +1,77 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Welcome to Blackjack";
+}
+
+<div class="text-center splash-container">
+    <h1 class="display-3">♠ ♥ Blackjack ♦ ♣</h1>
+    <p class="lead">Test your luck against the dealer!</p>
+    <div class="splash-content">
+        <p>Starting balance: <strong>$1,000</strong></p>
+        <p>Bet range: <strong>$10 - $200</strong></p>
+        <p>Blackjack pays <strong>3:2</strong></p>
+    </div>
+    
+    <!-- Game Mode Selection -->
+    <div class="row justify-content-center mt-4">
+   <div class="col-md-5">
+    <div class="card">
+   <div class="card-body">
+         <h5 class="card-title"><i class="bi bi-person"></i> Single Player</h5>
+  <p class="card-text">Play solo against the dealer</p>
+     <a asp-page="/Game" class="btn btn-success btn-lg w-100">Play Solo</a>
+                </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card border-primary">
+     <div class="card-body">
+ <h5 class="card-title"><i class="bi bi-people"></i> Multiplayer <span class="badge bg-primary">New!</span></h5>
+   <p class="card-text">Play with friends at the same table</p>
+     <a asp-page="/MultiplayerGame" class="btn btn-primary btn-lg w-100">Play Multiplayer</a>
+      </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Multiplayer Features -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-10">
+  <div class="alert alert-info">
+      <h6><i class="bi bi-info-circle"></i> Multiplayer Features:</h6>
+            <ul class="text-start mb-0">
+          <li>Play with up to 5 players at the same table</li>
+     <li>Each player has their own hand and balance</li>
+     <li>Share a table link with friends</li>
+          <li>Real-time game updates using SignalR</li>
+        <li>Same great Blackjack rules as single player</li>
+         </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .splash-container {
+ margin-top: 50px;
+    }
+    
+    .splash-content {
+        margin: 40px 0;
+        font-size: 1.2rem;
+    }
+    
+    .splash-content p {
+        margin: 10px 0;
+    }
+    
+    .card {
+        transition: transform 0.2s;
+    }
+  
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+</style>

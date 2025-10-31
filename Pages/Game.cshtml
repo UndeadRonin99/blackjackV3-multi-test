@@ -1,0 +1,150 @@
+@page
+@model BlackjackV3.Pages.GameModel
+@{
+    ViewData["Title"] = "Blackjack";
+}
+
+<div class="game-container" 
+     data-deal="@Model.ViewModel.TriggerDealAnimation"
+     data-hit="@Model.ViewModel.TriggerHitAnimation"
+     data-reveal="@Model.ViewModel.TriggerRevealAnimation">
+    
+    <div class="game-header">
+      <h1>Blackjack</h1>
+        <div class="balance-display">
+   <span class="label">Balance:</span>
+  <span class="amount">$@Model.ViewModel.Snapshot.Balance</span>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(Model.ViewModel.ErrorMessage))
+    {
+        <div class="alert alert-danger">
+  @Model.ViewModel.ErrorMessage
+        </div>
+    }
+
+    <div class="table-area">
+        <!-- Dealer Hand -->
+        <div class="dealer-section">
+            <h2>Dealer</h2>
+            <div class="score-display">
+           @if (Model.ViewModel.Snapshot.DealerHoleCardHidden)
+  {
+           <span>Showing: @Model.ViewModel.Snapshot.DealerTotal</span>
+     }
+      else
+                {
+      <span>Total: @Model.ViewModel.Snapshot.DealerTotal</span>
+   }
+        </div>
+       <partial name="_Hand" model="@(new HandDisplayModel { 
+ Cards = Model.ViewModel.Snapshot.DealerCards, 
+       HideSecondCard = Model.ViewModel.Snapshot.DealerHoleCardHidden,
+    HandId = "dealer-hand"
+       })" />
+        </div>
+
+        <!-- Deck Position (for animations) -->
+        <div class="deck-position">
+      <div class="card card--back"></div>
+        </div>
+
+        <!-- Player Hand -->
+        <div class="player-section">
+         <h2>Player</h2>
+     <div class="score-display">
+<span>Total: @Model.ViewModel.Snapshot.PlayerTotal</span>
+       @if (Model.ViewModel.Snapshot.PlayerTotal > 21)
+       {
+    <span class="bust-indicator">BUST!</span>
+              }
+       else if (Model.ViewModel.Snapshot.PlayerCards.Count == 2 && Model.ViewModel.Snapshot.PlayerTotal == 21)
+    {
+       <span class="blackjack-indicator">BLACKJACK!</span>
+   }
+         </div>
+     <partial name="_Hand" model="@(new HandDisplayModel { 
+    Cards = Model.ViewModel.Snapshot.PlayerCards, 
+          HideSecondCard = false,
+            HandId = "player-hand"
+            })" />
+        </div>
+    </div>
+
+    <!-- Message Area -->
+  <div class="message-area">
+        <p class="game-message">@Model.ViewModel.Snapshot.Message</p>
+    </div>
+
+    <!-- Betting and Actions -->
+    <div class="controls-area">
+     @if (Model.ViewModel.Snapshot.State == BlackjackV3.Domain.GameState.WaitingForBet)
+        {
+            <form method="post" asp-page-handler="Start" class="bet-form">
+     <div class="bet-controls">
+     <label for="betAmount">Bet Amount:</label>
+         <input type="number" 
+           id="betAmount" 
+         name="betAmount" 
+    value="@Model.ViewModel.BetAmount" 
+           min="@BlackjackV3.Domain.BlackjackGame.GetMinBet()" 
+            max="@BlackjackV3.Domain.BlackjackGame.GetMaxBet()" 
+        step="10" 
+  class="bet-input" />
+  <button type="submit" class="btn btn-primary btn-lg">Deal</button>
+      </div>
+     <div class="bet-info">
+          <small>Min: $@BlackjackV3.Domain.BlackjackGame.GetMinBet() | Max: $@BlackjackV3.Domain.BlackjackGame.GetMaxBet()</small>
+   </div>
+            </form>
+        }
+        else if (Model.ViewModel.Snapshot.State == BlackjackV3.Domain.GameState.PlayerTurn)
+        {
+      <div class="action-buttons">
+     <form method="post" asp-page-handler="Hit" style="display: inline;">
+          <button type="submit" class="btn btn-success" disabled="@(!Model.ViewModel.Snapshot.CanHit)">
+      Hit
+    </button>
+        </form>
+      <form method="post" asp-page-handler="Stand" style="display: inline;">
+    <button type="submit" class="btn btn-warning" disabled="@(!Model.ViewModel.Snapshot.CanStand)">
+   Stand
+   </button>
+       </form>
+        <form method="post" asp-page-handler="Double" style="display: inline;">
+   <button type="submit" class="btn btn-info" disabled="@(!Model.ViewModel.Snapshot.CanDouble)">
+        Double
+        </button>
+           </form>
+</div>
+ <div class="current-bet">
+        Current Bet: $@Model.ViewModel.Snapshot.Bet
+          </div>
+        }
+        else if (Model.ViewModel.Snapshot.CanRestart)
+    {
+      <div class="restart-section">
+  <div class="final-bet">
+             Final Bet: $@Model.ViewModel.Snapshot.Bet
+      </div>
+                <form method="post" asp-page-handler="Restart">
+               <button type="submit" class="btn btn-primary btn-lg">New Round</button>
+  </form>
+            </div>
+   }
+        else
+     {
+ <div class="waiting-message">
+                <p>Round in progress...</p>
+   <div class="current-bet">
+          Current Bet: $@Model.ViewModel.Snapshot.Bet
+    </div>
+  </div>
+    }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/game.js"></script>
+}
