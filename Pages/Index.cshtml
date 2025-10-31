@@ -4,74 +4,87 @@
     ViewData["Title"] = "Welcome to Blackjack";
 }
 
-<div class="text-center splash-container">
-    <h1 class="display-3">♠ ♥ Blackjack ♦ ♣</h1>
-    <p class="lead">Test your luck against the dealer!</p>
-    <div class="splash-content">
-        <p>Starting balance: <strong>$1,000</strong></p>
-        <p>Bet range: <strong>$10 - $200</strong></p>
-        <p>Blackjack pays <strong>3:2</strong></p>
-    </div>
-    
-    <!-- Game Mode Selection -->
-    <div class="row justify-content-center mt-4">
-   <div class="col-md-5">
-    <div class="card">
-   <div class="card-body">
-         <h5 class="card-title"><i class="bi bi-person"></i> Single Player</h5>
-  <p class="card-text">Play solo against the dealer</p>
-     <a asp-page="/Game" class="btn btn-success btn-lg w-100">Play Solo</a>
-                </div>
-          </div>
-        </div>
-        <div class="col-md-5">
-            <div class="card border-primary">
-     <div class="card-body">
- <h5 class="card-title"><i class="bi bi-people"></i> Multiplayer <span class="badge bg-primary">New!</span></h5>
-   <p class="card-text">Play with friends at the same table</p>
-     <a asp-page="/MultiplayerGame" class="btn btn-primary btn-lg w-100">Play Multiplayer</a>
-      </div>
+<link rel="stylesheet" href="~/css/index.css" asp-append-version="true">
+
+<div class="splash-container">
+    <div class="hero-section">
+    <h1 class="hero-title">♠ ♥ ♦ ♣<br/>BLACKJACK</h1>
+    <p class="hero-subtitle">Experience the thrill of 21 - Play solo or with friends!</p>
+        
+    <div class="game-features">
+  <div class="feature">
+     <div class="feature-icon">💰</div>
+ <div class="feature-text">$1,000 Starting Balance</div>
             </div>
+ <div class="feature">
+           <div class="feature-icon">🎯</div>
+                <div class="feature-text">3:2 Blackjack Payout</div>
+       </div>
+       <div class="feature">
+        <div class="feature-icon">⚡</div>
+          <div class="feature-text">Real-time Multiplayer</div>
+ </div>
         </div>
     </div>
-    
-    <!-- Multiplayer Features -->
-    <div class="row justify-content-center mt-4">
-        <div class="col-md-10">
-  <div class="alert alert-info">
-      <h6><i class="bi bi-info-circle"></i> Multiplayer Features:</h6>
-            <ul class="text-start mb-0">
-          <li>Play with up to 5 players at the same table</li>
-     <li>Each player has their own hand and balance</li>
-     <li>Share a table link with friends</li>
-          <li>Real-time game updates using SignalR</li>
-        <li>Same great Blackjack rules as single player</li>
-         </ul>
-            </div>
+
+    <div class="game-modes">
+        <div class="mode-card">
+            <div class="mode-icon">🎲</div>
+            <h2 class="mode-title">Single Player</h2>
+            <p class="mode-description">
+      Classic Blackjack experience. Test your skills against the dealer
+  in a traditional game. Perfect for practice or solo play.
+     </p>
+      <a href="/Game" class="mode-button solo">Play Solo</a>
         </div>
+
+        <div class="mode-card featured">
+            <div class="mode-icon">👥</div>
+   <h2 class="mode-title">
+  Multiplayer
+       <span class="mode-badge">NEW!</span>
+       </h2>
+   <p class="mode-description">
+  Join a table with up to 5 players! Each player has their own hand
+  and balance. Share a table link and play with friends in real-time.
+    </p>
+         <a href="/MultiplayerGame" class="mode-button multi">Play Multiplayer</a>
+ </div>
+    </div>
+
+    <div class="info-section">
+      <h3 class="info-title">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+     <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+  </svg>
+Multiplayer Features
+  </h3>
+        <ul class="info-list">
+            <li>
+                <span class="info-icon">✓</span>
+    <span>Play with up to 5 players at the same table</span>
+  </li>
+      <li>
+         <span class="info-icon">✓</span>
+                <span>Each player has their own hand and balance</span>
+    </li>
+      <li>
+      <span class="info-icon">✓</span>
+                <span>Share a table link with friends instantly</span>
+            </li>
+          <li>
+    <span class="info-icon">✓</span>
+         <span>Real-time updates using SignalR technology</span>
+            </li>
+ <li>
+         <span class="info-icon">✓</span>
+       <span>Same great Blackjack rules as single player</span>
+         </li>
+            <li>
+  <span class="info-icon">✓</span>
+     <span>Synchronized rounds - everyone plays together</span>
+            </li>
+        </ul>
     </div>
 </div>
-
-<style>
-    .splash-container {
- margin-top: 50px;
-    }
-    
-    .splash-content {
-        margin: 40px 0;
-        font-size: 1.2rem;
-    }
-    
-    .splash-content p {
-        margin: 10px 0;
-    }
-    
-    .card {
-        transition: transform 0.2s;
-    }
-  
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-</style>

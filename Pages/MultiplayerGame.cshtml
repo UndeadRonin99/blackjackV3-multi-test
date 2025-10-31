@@ -4,154 +4,181 @@
     ViewData["Title"] = "Multiplayer Blackjack";
 }
 
-<div class="container-fluid mt-4">
-  <div class="row">
-<div class="col-12">
-<div class="d-flex justify-content-between align-items-center mb-3">
- <h2>Multiplayer Blackjack - Table: @Model.TableId</h2>
-     <div>
- <span class="badge bg-primary me-2" id="playerName">@Model.PlayerName</span>
-     <button class="btn btn-sm btn-outline-secondary" id="shareTableBtn">
-      <i class="bi bi-share"></i> Share Table
-    </button>
-     </div>
-   </div>
-        </div>
-    </div>
-
-    <!-- Connection Status -->
-    <div class="row mb-3">
-  <div class="col-12">
-         <div id="connectionStatus" class="alert alert-info">
-           <span id="statusText">Connecting to game server...</span>
-            </div>
-  </div>
-    </div>
-
-    <!-- Dealer Section -->
-    <div class="row mb-4">
-        <div class="col-12">
-        <div class="card bg-dark text-white">
-     <div class="card-body">
-   <h5 class="card-title">Dealer 
-  <span class="badge bg-secondary" id="dealerTotal">0</span>
-    </h5>
-   <div id="dealerHand" class="card-container d-flex gap-2 flex-wrap">
-    <!-- Dealer cards will be inserted here -->
-     </div>
-      </div>
-  </div>
-    </div>
-    </div>
-
-    <!-- Players Section -->
-    <div class="row">
-    <div class="col-12">
-     <div class="card">
-      <div class="card-body">
-       <h5 class="card-title">Players at Table</h5>
-  <div id="playersContainer" class="row g-3">
-  <!-- Player cards will be inserted here -->
-          </div>
- </div>
-            </div>
-     </div>
-    </div>
-
- <!-- Current Player Controls -->
-    <div class="row mt-4">
-<div class="col-12">
-            <div class="card border-primary">
-      <div class="card-body">
-  <h5 class="card-title">Your Game</h5>
-           
-       <!-- Message Display -->
-        <div id="gameMessage" class="alert alert-info mb-3">
-        Place your bet to start!
-          </div>
-
-    <!-- Bet Controls -->
- <div id="betControls" class="mb-3">
-  <div class="row align-items-center">
-     <div class="col-md-4">
-  <label for="betAmount" class="form-label">Bet Amount</label>
-       <input type="number" class="form-control" id="betAmount" 
-     min="10" max="200" value="50" step="10">
- </div>
-     <div class="col-md-4">
-    <label class="form-label">Balance</label>
-            <div class="h4 text-success" id="playerBalance">$1000</div>
-           </div>
-     <div class="col-md-4">
-     <button class="btn btn-success btn-lg w-100" id="placeBetBtn">
-Place Bet & Ready Up
-     </button>
-  </div>
- </div>
-   </div>
-
- <!-- Game Action Controls -->
-   <div id="gameControls" class="btn-group w-100" role="group" style="display: none;">
-             <button class="btn btn-primary btn-lg" id="hitBtn">Hit</button>
-   <button class="btn btn-warning btn-lg" id="standBtn">Stand</button>
- <button class="btn btn-info btn-lg" id="doubleBtn">Double</button>
+<div class="multiplayer-game-container">
+ <!-- Header Section -->
+    <div class="game-header">
+        <div class="header-content">
+     <div class="header-left">
+           <h1 class="game-title">?? Multiplayer Blackjack ??</h1>
+      <div class="table-info">
+            <span class="badge badge-table">Table: @Model.TableId</span>
+        <span class="badge badge-player">@Model.PlayerName</span>
        </div>
+  </div>
+<div class="header-right">
+         <button class="btn-share" id="shareTableBtn">
+      <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+ <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
+         </svg>
+                 Share Table
+              </button>
+            </div>
+        </div>
+        
+        <!-- Connection Status -->
+      <div id="connectionStatus" class="connection-status connecting">
+ <div class="status-dot"></div>
+      <span id="statusText">Connecting to server...</span>
+ </div>
+    </div>
 
-            <!-- Next Round Button -->
-       <div id="nextRoundControls" class="mt-3" style="display: none;">
-   <button class="btn btn-success btn-lg w-100" id="nextRoundBtn">
-     Ready for Next Round
-  </button>
+    <!-- Main Game Area -->
+    <div class="game-layout">
+        <!-- Dealer Section -->
+        <div class="dealer-section">
+       <div class="dealer-header">
+       <h2 class="dealer-title">Dealer</h2>
+                <div class="dealer-score">
+ <span class="score-label">Total:</span>
+           <span class="score-value" id="dealerTotal">0</span>
+   </div>
+    </div>
+            <div id="dealerHand" class="dealer-hand">
+<!-- Dealer cards will be inserted here -->
+            </div>
+      </div>
+
+        <!-- Players Grid -->
+        <div class="players-section">
+      <div class="section-header">
+ <h3>Players at Table</h3>
+<div class="player-count">
+       <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+   <path d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1h8zm-7.978-1A.261.261 0 0 1 7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002a.274.274 0 0 1-.014.002H7.022zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0zM6.936 9.28a5.88 5.88 0 0 0-1.23-.247A7.35 7.35 0 0 0 5 9c-4 0-5 3-5 4 0 .667.333 1 1 1h4.216A2.238 2.238 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816zM4.92 10A5.493 5.493 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275zM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0zm3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/>
+            </svg>
+        <span id="playerCountDisplay">0/5</span>
+      </div>
+          </div>
+            <div id="playersContainer" class="players-grid">
+                <!-- Player cards will be inserted here -->
+      </div>
         </div>
 
-       <!-- Waiting for Players -->
- <div id="waitingMessage" class="alert alert-warning mt-3" style="display: none;">
-               <div class="spinner-border spinner-border-sm me-2" role="status">
-     <span class="visually-hidden">Loading...</span>
+      <!-- Current Player Controls -->
+   <div class="player-controls">
+     <div class="controls-header">
+             <h3>Your Game</h3>
+                <div class="balance-display">
+   <span class="balance-label">Balance:</span>
+ <span class="balance-amount" id="playerBalance">$1,000</span>
+        </div>
             </div>
-     Waiting for other players...
+
+          <!-- Message Display -->
+            <div id="gameMessage" class="game-message">
+          Place your bet to start playing!
+            </div>
+
+         <!-- Bet Controls -->
+   <div id="betControls" class="bet-controls">
+      <div class="bet-input-group">
+          <label for="betAmount">Bet Amount</label>
+               <div class="input-with-buttons">
+              <button class="btn-bet-adjust" id="decreaseBet">?</button>
+      <input type="number" id="betAmount" min="10" max="200" value="50" step="10">
+  <button class="btn-bet-adjust" id="increaseBet">+</button>
+  </div>
+           <div class="bet-presets">
+       <button class="btn-preset" data-amount="10">$10</button>
+<button class="btn-preset" data-amount="25">$25</button>
+             <button class="btn-preset" data-amount="50">$50</button>
+      <button class="btn-preset" data-amount="100">$100</button>
+  <button class="btn-preset" data-amount="200">$200</button>
+   </div>
+        </div>
+     <button class="btn-primary btn-large" id="placeBetBtn">
+<svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+  <path d="M11 5.5a.5.5 0 0 1 .5-.5h2.764l-4.607 4.607a.5.5 0 0 1-.708 0L6.803 7.461 3.354 10.91a.5.5 0 1 1-.708-.708l4-4a.5.5 0 0 1 .708 0l2.146 2.147L13.293 4.5H11.5a.5.5 0 0 1-.5-.5z"/>
+      </svg>
+           Place Bet & Ready Up
+ </button>
       </div>
+
+            <!-- Game Action Controls -->
+   <div id="gameControls" class="game-controls" style="display: none;">
+                <button class="btn-action btn-hit" id="hitBtn">
+               <span class="btn-icon">+</span>
+     Hit
+ </button>
+        <button class="btn-action btn-stand" id="standBtn">
+      <span class="btn-icon">?</span>
+       Stand
+ </button>
+      <button class="btn-action btn-double" id="doubleBtn">
+                  <span class="btn-icon">2×</span>
+     Double
+      </button>
+    </div>
+
+      <!-- Next Round Button -->
+            <div id="nextRoundControls" class="next-round-controls" style="display: none;">
+        <button class="btn-primary btn-large" id="nextRoundBtn">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+             <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z"/>
+  <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466z"/>
+   </svg>
+               Ready for Next Round
+      </button>
  </div>
+
+ <!-- Waiting Message -->
+   <div id="waitingMessage" class="waiting-message" style="display: none;">
+    <div class="spinner"></div>
+    <span>Waiting for other players...</span>
  </div>
- </div>
+</div>
     </div>
 </div>
 
 <!-- Share Modal -->
-<div class="modal fade" id="shareModal" tabindex="-1">
-    <div class="modal-dialog">
+<div class="modal-overlay" id="shareModalOverlay" style="display: none;">
     <div class="modal-content">
-         <div class="modal-header">
-    <h5 class="modal-title">Share Table Link</h5>
-       <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-  </div>
+        <div class="modal-header">
+            <h3>Share Table Link</h3>
+            <button class="btn-close" id="closeShareModal">&times;</button>
+        </div>
    <div class="modal-body">
-<p>Share this link with friends to join your table:</p>
-         <div class="input-group">
-     <input type="text" class="form-control" id="shareLink" readonly>
-  <button class="btn btn-primary" id="copyLinkBtn">Copy</button>
-          </div>
+       <p>Share this link with friends to join your table:</p>
+            <div class="share-link-container">
+                <input type="text" class="share-link-input" id="shareLink" readonly>
+    <button class="btn-copy" id="copyLinkBtn">
+                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+       <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+     </svg>
+            Copy
+         </button>
+            </div>
+  </div>
  </div>
-    </div>
-    </div>
 </div>
 
 <link rel="stylesheet" href="~/css/multiplayer-game.css" asp-append-version="true">
 
 @section Scripts {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.14/signalr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.14/signalr.min.js"></script>
     <script src="~/js/multiplayer-game.js" asp-append-version="true"></script>
     <script>
-     // Initialize the game
-        const tableId = '@Model.TableId';
- const playerName = '@Model.PlayerName';
+  // Initialize the game
+   const tableId = '@Model.TableId';
+        const playerName = '@Model.PlayerName';
         
-      // Set share link
-      const shareLink = window.location.origin + '/MultiplayerGame?tableId=' + tableId;
-        document.getElementById('shareLink').value = shareLink;
+        // Set share link
+        const shareLink = window.location.origin + '/MultiplayerGame?tableId=' + tableId;
+      document.getElementById('shareLink').value = shareLink;
         
-        // Initialize game client
-     window.gameClient = new MultiplayerGameClient(tableId, playerName);
+ // Initialize game client
+        window.gameClient = new MultiplayerGameClient(tableId, playerName);
     window.gameClient.start();
     </script>
 }
